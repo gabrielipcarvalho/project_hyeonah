@@ -14,8 +14,6 @@
         -   [Web Scraping Script](#web-scraping-script)
         -   [CSV Processing Script](#csv-processing-script)
     -   [Dependencies](#dependencies)
-    -   [Contributing](#contributing)
-    -   [License](#license)
     -   [Author](#author)
 
 ## Description
