@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.db
+
+# Virtual environment
+venv/
+.venv/
+
+# macOS
+.DS_Store
+
+# Environment variables file
+.env
+
+# VSCode or other IDE folders
+.vscode/
+*.code-workspace
+
+# IDE settings and other OS-specific files
+*.swp
+*~
+
