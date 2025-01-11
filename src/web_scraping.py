@@ -2,8 +2,8 @@
 Author: Gabriel Isaiah Padus-Carvallion
 Date: 03-01-2025
 
-Description: 
-This script automates the process of logging into LinkedIn, navigating through the pages of company search results, 
+Description:
+This script automates the process of logging into LinkedIn, navigating through the pages of company search results,
 and scraping the company names into a CSV file. The script performs the following tasks:
 
 1. Loads LinkedIn credentials from environment variables stored in a `.env` file.
@@ -16,7 +16,7 @@ and scraping the company names into a CSV file. The script performs the followin
 
 Notes:
 - The CSV file is assumed to already exist and contains a header row ["Name", "Email"].
-- The file paths are previously defined, if you ever change the file paths, remember to change them here too.
+- The file paths are previously defined; if you ever change the file paths, remember to change them here too.
 
 Dependencies:
 - selenium
@@ -102,9 +102,15 @@ def linkedin_login(driver, email, password):
 def scrape_companies_from_page(driver):
     """Scrapes company names from the current page."""
     company_names = []
-
-    # Find all 'a' tags with the specific class that encloses company names
-    anchor_tags = driver.find_elements(By.CLASS_NAME, "OuPhnhXhvqFqqqKGsGzJvJbbQzqQqoBaHlDLUuWA ")
+    
+    # Target <a> tags in the textual block that contains the company name:
+    # //div[contains(@class,'t-roman t-sans')]
+    #    //a[@data-test-app-aware-link and contains(@href,'/company/')]
+    anchor_tags = driver.find_elements(
+        By.XPATH,
+        "//div[contains(@class,'t-roman t-sans')]"
+        "//a[@data-test-app-aware-link and contains(@href,'/company/')]"
+    )
 
     for tag in anchor_tags:
         name = tag.text.strip()
@@ -138,8 +144,15 @@ def main():
                 # Navigate to the URL
                 driver.get(url)
 
-                # Wait until the company listings are loaded
-                WebDriverWait(driver, 10).until(EC.presence_of_all_elements_located((By.CLASS_NAME, "OuPhnhXhvqFqqqKGsGzJvJbbQzqQqoBaHlDLUuWA ")))
+                # Wait for the elements in the textual block indicating company names
+                WebDriverWait(driver, 10).until(
+                    EC.presence_of_all_elements_located(
+                        (By.XPATH,
+                         "//div[contains(@class,'t-roman t-sans')]"
+                         "//a[@data-test-app-aware-link and contains(@href,'/company/')]"
+                        )
+                    )
+                )
 
                 # Scrape the company names from the page
                 company_names = scrape_companies_from_page(driver)
