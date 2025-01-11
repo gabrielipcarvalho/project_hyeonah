@@ -56,9 +56,7 @@ if not LINKEDIN_EMAIL or not LINKEDIN_PASSWORD:
 SEARCH_BASE_URL = (
     "https://www.linkedin.com/search/results/companies/"
     "?companyHqGeo=%5B%22104468365%22%5D"
-    "&companySize=%5B%22C%22%2C%22D%22%2C%22E%22%5D"
-    "&industryCompanyVertical=%5B%2296%22%2C%221594%22%2C%226%22%2C%224%22%5D"
-    "&keywords=software"
+    "&companySize=%5B%22H%22%2C%22I%22%5D"
     "&origin=FACETED_SEARCH"
     "&page={page_num}"
 )
@@ -131,13 +129,13 @@ def main():
         linkedin_login(driver, LINKEDIN_EMAIL, LINKEDIN_PASSWORD)
 
         # 6c. Open the CSV in append mode
-        csv_path = "../data/db/data_base_11_to_500.csv"  # Adjust if your relative path is different
+        csv_path = "../data/db/data_base_5001_to_infinity.csv"  # Adjust if your relative path is different
         with open(csv_path, mode="a", newline="", encoding="utf-8") as csvfile:
             writer = csv.writer(csvfile)
             # Assumes the header row ["Name", "Email"] is already in place.
 
             # 6d. Scrape the pages
-            for page_num in range(1, 83):  # Pages 1 through 82
+            for page_num in range(1, 38):  # Pages 1 through 37
                 url = SEARCH_BASE_URL.format(page_num=page_num)
                 print(f"Scraping page {page_num} -> {url}")
 
@@ -164,7 +162,7 @@ def main():
                 # (Optional) Sleep between page requests to avoid being flagged
                 time.sleep(2)  # Sleep 2 seconds between requests
 
-        print("Scraping completed. Company names have been appended to data_base_11_to_500.csv.")
+        print("Scraping completed. Company names have been appended to data_base_501_to_infinity.csv.")
 
     finally:
         # 6e. Close the driver (important!)
